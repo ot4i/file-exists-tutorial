@@ -33,7 +33,7 @@
         "_common": 
 		{
             "name": "File - Using the FileExists node to selectively invoke the FileRead node",
-            "shortDescription": "Learn how to use the FileExists node to trigger a message flow.",
+            "shortDescription": "Learn how to use the FileExists node to trigger a message flow (requires v12.0.4.0 or higher)",
             "durationText": "This tutorial takes approximately",
             "durationTime": "10 minutes",
             "_resourceToOpenComment": "The ID of the first resource to open when the user imports the tutorial. Resource IDs are defined in the repo_metadata.json Tutorials listing on ot4i.",
@@ -200,14 +200,14 @@
 						}
 					},
 					{
-                       "section":"<b>Create a temporary directory and configure the flow's trace nodes</b>",
+                       "section":"<b>Create a temporary directory and configure the message flow's trace nodes</b>",
 						  "steps":
                         {
                           "type": "ordered",
                           "details":
                           [
                              {
-                                 "details": "The message flow includes two trace nodes (named CacheUpdated and CacheNotUpdated) which are both currently configured to write a trace file named <code>C:\\temp\\TraceFileExists.txt</code>. Make sure this directory exists, or update the message flow nodes' properties."
+                                 "details": "The message flow includes two trace nodes (named CacheUpdated and CacheNotUpdated) which are both currently configured to write a trace file named <code>C:\\temp\\TraceFileExists.txt</code>. Make sure this temporary directory exists, or update the message flow nodes' properties to point to a different file location."
                                              }
 						  ]
 						}
@@ -251,13 +251,13 @@
                                     "type": "ordered",
                                     "details": [                                      
                                     {
-                                        "details": "Open <span class='resource'>FileExistsFlow.msgflow</span> and click the Flow Exerciser icon <img src='http://ot4i.github.io/ot4i.tutorials//dist/images/icons/iib/startFlowExerciser.png' alt='' /> to start testing the flow (when challenged you do not need to redeploy the flow again)."
+                                        "details": "Open <span class='resource'>FileExistsFlow.msgflow</span> and click the Flow Exerciser icon <img src='http://ot4i.github.io/ot4i.tutorials//dist/images/icons/iib/startFlowExerciser.png' alt='' /> to start testing the flow (if you have already deployed the flow you will be asked whether you want to redeploy it which should only be necessary if you have subsequently changed the flow since it was last deployed)."
                                         },
 										{
-                                            "details": "Click the Send Message icon <img src='http://ot4i.github.io/ot4i.tutorials/dist/images/icons/iib/sendMessage.png' alt='' />. One saved message, named Input1, is provided and can be used to invoke the HTTP Input node..."
+                                            "details": "Click the Send Message icon <img src='http://ot4i.github.io/ot4i.tutorials/dist/images/icons/iib/sendMessage.png' alt='' />. One saved message is provided, named Input1, which can be used to invoke the HTTP Input node..."
                                         },																				
                                         {
-                                            "details": "The input message <span class='resource'>Input1</span> contains this data:<br><code>{<br>&nbsp;&nbsp;&nbsp;&nbsp;\"CountryCode\": \"UK\"<br>}</code><br><br>Select this input message and click Send and your message is sent to the HTTPInput node. You will receive a JSON reply message structured like this (but with a different timestamp):<br><code>{<br>&nbsp;&nbsp;&nbsp;&nbsp;\"CountryCode\": \"UK\",<br>&nbsp;&nbsp;&nbsp;&nbsp;\"CountryName\": \"Unknown\",<br>&nbsp;&nbsp;&nbsp;&nbsp;\"CacheInfo\": \"Cache has not yet been initialised\"<br>}</code><br><br>After you close the dialog, the path taken through the messageflow will be highlighted."
+                                            "details": "The input message <span class='resource'>Input1</span> contains this data:<br><code>{<br>&nbsp;&nbsp;&nbsp;&nbsp;\"CountryCode\": \"UK\"<br>}</code><br><br>Select this input message and click Send and your message is sent to the HTTPInput node. You will receive a JSON reply message structured like this:<br><code>{<br>&nbsp;&nbsp;&nbsp;&nbsp;\"CountryCode\": \"UK\",<br>&nbsp;&nbsp;&nbsp;&nbsp;\"CountryName\": \"Unknown\",<br>&nbsp;&nbsp;&nbsp;&nbsp;\"CacheInfo\": \"Cache has not yet been initialised\"<br>}</code><br><br>After you close the dialog, the path taken through the message flow will be highlighted."
 										},
 										{										
 										  "details": "Copy the provided input file from <code>&lt;Integration Toolkit workspace&gt;/ApplicationFileExists/CountryCode.json</code> to the input directory that you created on your file system earlier. The file will be processed by the message flow to update its cache and will then be deleted. This may take a few seconds as the polling interval of the flow is set to 20 seconds."
