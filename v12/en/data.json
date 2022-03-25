@@ -106,7 +106,7 @@
                             "section": "When you click Import, one project will be created in your workspace: An application named <span class='application'>ApplicationFileExists</span>"
                         },
                         {
-                            "section": "<span class='application'>ApplicationFileExists</span> provides a single message flow named <span class='resource'>FlowFileExists</span> which uses a FileExists node to poll a directory and which triggers the message flow when it notices that a file has arrived. The file itself is not parsed, but metadata about the file is propagated downstream through the flow. Downstream nodes use the time when the file was last modified to determine whether or not to update an in-memory cache. The following descriptions summarize the functionality of each message flow node"							
+                            "section": "<span class='application'>ApplicationFileExists</span> provides a single message flow named <span class='application'>FlowFileExists</span> which uses a FileExists node to poll a directory and triggers the message flow when it notices that a file has arrived. The file itself is not parsed, but information about the file is propagated through the flow. Downstream nodes use the time when the file was last modified to determine whether or not to update an in-memory cache. The following descriptions summarize the functionality of each message flow node:"							
                         },
 						{ 
                         	"section":"<span class='uicontrol'>HTTP Input</span>: An Input node that receives an input message across HTTP that contains a country code (an abbreviated country name)."
@@ -151,6 +151,12 @@
                             "link": "https://www.ibm.com/docs/SSTTDS_12.0/com.ibm.etools.mft.doc/bi12002_.htm",
 							"type": "web"
                         },
+						{
+                            "title": "IBM Documentation link to ",
+                            "description": "FileExists node",
+                            "link": "https://www.ibm.com/docs/en/app-connect/12.0?topic=nodes-fileexists-node",
+							"type": "web"
+                        },
                         {
                              "title": "IBM Documentation link to ",
                              "description": "Long-lived variable",
@@ -177,7 +183,7 @@
                 "overview": 
 				{
                     "name": "Prepare",
-                    "heading": "Perform the following steps to prepare your environment to run the message flow <span class='application'>FlowFileExists</span>.",
+                    "heading": "The following steps help you to prepare your environment ready for running the message flow.",
                     "_prepareComment": "A description of what just happened when the user clicked Import, and what will happen when the user clicks Deploy.",
                     "sections": [
 				    {
@@ -190,6 +196,19 @@
                             {
                                 "details": "From the Integration Explorer view in the bottom left corner of the Toolkit, right-click the Integration Servers folder and select the option to <span class='uicontrol'>Create a local integration server</span>. Leave all the options with their default values and click Finish. The local Integration Server will be started, using a project in your Toolkit's workspace as the work directory. Click OK to dismiss the Success dialog. "
                             }
+						  ]
+						}
+					},
+					{
+                       "section":"<b>Create a temporary directory and configure the flow's trace nodes</b>",
+						  "steps":
+                        {
+                          "type": "ordered",
+                          "details":
+                          [
+                             {
+                                 "details": "The message flow includes two trace nodes (named CacheUpdated and CacheNotUpdated) which are both currently configured to write a trace file named <code>C:\\temp\\TraceFileExists.txt</code>. Make sure this directory exists, or update the message flow nodes' properties."
+                                             }
 						  ]
 						}
 					},
@@ -208,7 +227,7 @@
                                              }
 						  ]
 						}
-					},					
+					},	
 					{
                             "section": "Next you will use the Flow exerciser to send HTTP requests to the message flow."
                     }
@@ -232,13 +251,7 @@
                                     "type": "ordered",
                                     "details": [                                      
                                     {
-                                        "details": "Open <span class='resource'>FileExistsFlow.msgflow</span>.",
-                                        "substeps":{
-                                        "type": "unordered",
-                                        "details": 
-								        [
-                                        {
-                                          "details": "Click the Flow Exerciser icon <img src='http://ot4i.github.io/ot4i.tutorials//dist/images/icons/iib/startFlowExerciser.png' alt='' /> to start testing the flow (when challenged you do not need to redeploy the flow again)."
+                                        "details": "Open <span class='resource'>FileExistsFlow.msgflow</span> and click the Flow Exerciser icon <img src='http://ot4i.github.io/ot4i.tutorials//dist/images/icons/iib/startFlowExerciser.png' alt='' /> to start testing the flow (when challenged you do not need to redeploy the flow again)."
                                         },
 										{
                                             "details": "Click the Send Message icon <img src='http://ot4i.github.io/ot4i.tutorials/dist/images/icons/iib/sendMessage.png' alt='' />. One saved message, named Input1, is provided and can be used to invoke the HTTP Input node..."
@@ -250,7 +263,7 @@
 										  "details": "Copy the provided input file from <code>&lt;Integration Toolkit workspace&gt;/ApplicationFileExists/CountryCode.json</code> to the input directory that you created on your file system earlier. The file will be processed by the message flow to update its cache and will then be deleted. This may take a few seconds as the polling interval of the flow is set to 20 seconds."
 										},										                                        
 										{
-										 "details":"In the Flow Exerciser toolbar, click the View Path icon <img src='http://ot4i.github.io/iib-tutorials/images/icons/iib/viewPath.png' alt='View path' /> to highlight the message path through the message flow. You should now see a second path highlighted in the flow (FileExists > Update Cache? > File Read > Update Cache > CacheUpdated) demonstrating the actions of the FileExists node. The flow will have noticed that the in-memory cache had not previously been populated and will have used the content of the file you copied to populate the cache. The Trace node at the end of the flow named CacheUpdated should have created an entry in the trace file (file location discussed earlier in the Prepare section of this tutorial) with content similar to the following:<br><code>===== Trace at 2022-03-25 10:49:27.628266 =====<br>File Name = 'CountryCodes.txt'<br>File LastModified = GMTTIMESTAMP '2022-03-22 12:16:35.785'<br>Cache LastModified = GMTTIMESTAMP '2022-03-25 10:49:27.621446'<br>The flow has updated its cache, because the FileExists node was triggered by a file whose LastModified timestamp was more recent than the time of the last cache update.<br></code>"
+										 "details":"In the Flow Exerciser toolbar, click the View Path icon <img src='http://ot4i.github.io/iib-tutorials/images/icons/iib/viewPath.png' alt='View path' /> to highlight the message path through the message flow. You should now see a second path highlighted in the flow (FileExists > Update Cache? > File Read > Update Cache > CacheUpdated) demonstrating the actions of the FileExists node. The flow will have noticed that the in-memory cache had not previously been populated and will have used the content of the file you copied to populate the cache. The Trace node at the end of the flow named CacheUpdated should have created an entry in the trace file (file location discussed earlier in the Prepare section of this tutorial) with content similar to the following:<br><code>===== Trace at 2022-03-25 10:49:27.628266 =====<br>File Name = 'CountryCodes.txt'<br>File LastModified = GMTTIMESTAMP '2022-03-22 12:16:35.785'<br>Cache LastModified = GMTTIMESTAMP '2022-03-25 10:49:27.621446'<br>The flow has updated its cache, either because it has not previously been initialised, or because the FileExists node was triggered by a file whose LastModified timestamp was more recent than the time of the last cache update.<br></code>"
 										},
 										{
                                             "details": "Now that the cache has been populated we will re-test the bottom branch of the flow by clicking the Send Message icon <img src='http://ot4i.github.io/ot4i.tutorials/dist/images/icons/iib/sendMessage.png' alt='' />. Using the same saved message, named Input1, we will repeat the earlier test but this time you should see a different reply message..."
@@ -265,14 +278,9 @@
 										 "details": "If you make an edit to the CountryCodes.txt file (for example, add a new country to the list) and resave the file so that it has been recently modified (after the last update to the cache), then you should be able to copy it to the input directory for the FileExists node and the flow will update its cache again."
 										}										
                                         ]
-                                        }
                                     }
-                                ]
                             }
-                        },
-			{
-			    "section": "This tutorial has demonstrated the FileExists node."
-			}
+
                     ]
                 },
                 "helpLinks": 
